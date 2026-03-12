@@ -1,0 +1,11 @@
+services:
+  registry:
+    image: registry:2
+    restart: unless-stopped
+    volumes:
+      - registry-data:/var/lib/registry
+    environment:
+      REGISTRY_HTTP_SECRET: ${SERVICE_BASE64_REGISTRY}
+
+volumes:
+  registry-data:

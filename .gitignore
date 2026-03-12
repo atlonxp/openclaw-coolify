@@ -1,6 +1,7 @@
 # Secrets
 .env
 .DS_Store
+.idea/
 
 # Dependencies
 node_modules/
@@ -8,4 +9,7 @@ node_modules/
 # Build
 .next/
 dist/
+
+# Persistent data (local bind mounts)
+data/
 # docs/

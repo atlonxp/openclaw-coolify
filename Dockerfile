@@ -3,7 +3,7 @@
 ########################################
 # Stage 1: Base System
 ########################################
-FROM node:20-bookworm-slim AS base
+FROM node:22-bookworm-slim AS base
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_ROOT_USER_ACTION=ignore
@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     sqlite3 \
     pass \
     chromium \
+    docker.io \
     && rm -rf /var/lib/apt/lists/*
 
 # 🔥 CRITICAL FIX (native modules)
@@ -74,28 +75,26 @@ RUN --mount=type=cache,target=/data/.bun/install/cache \
     bun pm -g untrusted && \
     bun install -g @openai/codex @google/gemini-cli opencode-ai @steipete/summarize @hyperbrowser/agent clawhub
 
-# Ensure global npm bin is in PATH
-ENV PATH="/usr/local/bin:/usr/local/lib/node_modules/.bin:${PATH}"
-
-# OpenClaw (npm install)
-RUN --mount=type=cache,target=/data/.npm \
-    if [ "$OPENCLAW_BETA" = "true" ]; then \
+# OpenClaw (via npm so binary lands in /usr/local/bin, not /data which is a mount)
+RUN if [ "$OPENCLAW_BETA" = "true" ]; then \
     npm install -g openclaw@beta; \
     else \
     npm install -g openclaw; \
-    fi 
+    fi
 
-# Install uv explicitly
-RUN curl -L https://github.com/azlux/uv/releases/latest/download/uv-linux-x64 -o /usr/local/bin/uv && \
-    chmod +x /usr/local/bin/uv
+# Ensure global bins are in PATH
+ENV PATH="/usr/local/bin:/usr/local/lib/node_modules/.bin:${PATH}"
+
+# Make sure uv and other local bins are available
+ENV PATH="/root/.local/bin:${PATH}"
+
+# Install uv (official astral-sh installer)
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Claude + Kimi
 RUN curl -fsSL https://claude.ai/install.sh | bash && \
     curl -L https://code.kimi.com/install.sh | bash && \
     command -v uv
-
-# Make sure uv and other local bins are available
-ENV PATH="/root/.local/bin:${PATH}"
 
 ########################################
 # Stage 4: Final

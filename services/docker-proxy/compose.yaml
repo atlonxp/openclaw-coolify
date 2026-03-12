@@ -1,0 +1,16 @@
+services:
+  docker-proxy:
+    image: tecnativa/docker-socket-proxy:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      # Security: Only enable necessary Docker APIs
+      POST: 1       # Create containers
+      CONTAINERS: 1 # List/manage containers
+      IMAGES: 1     # Pull images
+      NETWORKS: 1   # Connect to networks
+      INFO: 1       # Version check
+      VERSION: 1
+      EXEC: 1       # Run commands (exec)
+      EVENTS: 1     # Listen for events (if needed)
