@@ -14,7 +14,7 @@ services:
       EXEC: 1
       EVENTS: 1
     ports:
-      - "127.0.0.1:18790:2375"
+      - "127.0.0.1:18792:2375"
 
   searxng:
     image: searxng/searxng:latest
@@ -27,7 +27,7 @@ services:
       SEARXNG_BASE_URL: http://searxng:8080
       SEARXNG_SERVER_SECRET_KEY: ${SERVICE_BASE64_SEARXNG:-changeme}
     ports:
-      - "127.0.0.1:18791:8080"
+      - "127.0.0.1:18793:8080"
     cap_drop:
       - ALL
     cap_add:
@@ -41,7 +41,7 @@ services:
     volumes:
       - registry-data:/var/lib/registry
     ports:
-      - "127.0.0.1:18792:5000"
+      - "127.0.0.1:18794:5000"
     environment:
       REGISTRY_HTTP_SECRET: ${SERVICE_BASE64_REGISTRY:-changeme}
 
