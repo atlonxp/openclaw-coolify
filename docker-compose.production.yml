@@ -17,12 +17,12 @@ services:
       - "127.0.0.1:18792:2375"
 
   searxng:
-    image: searxng/searxng:latest
+    build:
+      context: .
+      dockerfile: services/searxng/Dockerfile
     restart: unless-stopped
     volumes:
       - searxng-data:/var/lib/searxng
-      - ./services/searxng/settings.yml:/etc/searxng/settings.yml:ro
-      - ./services/searxng/limiter.toml:/etc/searxng/limiter.toml:ro
     environment:
       SEARXNG_BASE_URL: http://searxng:8080
       SEARXNG_SERVER_SECRET_KEY: ${SERVICE_BASE64_SEARXNG:-changeme}

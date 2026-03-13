@@ -1,8 +1,8 @@
 FROM searxng/searxng:latest
 
 # Copy configuration files directly into the image
-COPY settings.yml /etc/searxng/settings.yml
-COPY limiter.toml /etc/searxng/limiter.toml
+COPY services/searxng/settings.yml /etc/searxng/settings.yml
+COPY services/searxng/limiter.toml /etc/searxng/limiter.toml
 
 # Ensure correct permissions
 USER root

@@ -1,8 +1,8 @@
 services:
   searxng:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../..
+      dockerfile: services/searxng/Dockerfile
     restart: unless-stopped
     volumes:
       - searxng-data:/var/lib/searxng
