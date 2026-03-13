@@ -4,6 +4,8 @@ services:
     restart: unless-stopped
     volumes:
       - registry-data:/var/lib/registry
+    ports:
+      - "127.0.0.1:18792:5000"
     environment:
       REGISTRY_HTTP_SECRET: ${SERVICE_BASE64_REGISTRY}
 

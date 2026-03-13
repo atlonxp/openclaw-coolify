@@ -1,0 +1,50 @@
+services:
+  docker-proxy:
+    image: tecnativa/docker-socket-proxy:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      POST: 1
+      CONTAINERS: 1
+      IMAGES: 1
+      NETWORKS: 1
+      INFO: 1
+      VERSION: 1
+      EXEC: 1
+      EVENTS: 1
+    ports:
+      - "127.0.0.1:18790:2375"
+
+  searxng:
+    image: searxng/searxng:latest
+    restart: unless-stopped
+    volumes:
+      - searxng-data:/var/lib/searxng
+      - ./services/searxng/settings.yml:/etc/searxng/settings.yml:ro
+      - ./services/searxng/limiter.toml:/etc/searxng/limiter.toml:ro
+    environment:
+      SEARXNG_BASE_URL: http://searxng:8080
+      SEARXNG_SERVER_SECRET_KEY: ${SERVICE_BASE64_SEARXNG:-changeme}
+    ports:
+      - "127.0.0.1:18791:8080"
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+
+  registry:
+    image: registry:2
+    restart: unless-stopped
+    volumes:
+      - registry-data:/var/lib/registry
+    ports:
+      - "127.0.0.1:18792:5000"
+    environment:
+      REGISTRY_HTTP_SECRET: ${SERVICE_BASE64_REGISTRY:-changeme}
+
+volumes:
+  searxng-data:
+  registry-data:

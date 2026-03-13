@@ -9,6 +9,8 @@ services:
     environment:
       SEARXNG_BASE_URL: http://searxng:8080
       SEARXNG_SERVER_SECRET_KEY: ${SERVICE_BASE64_SEARXNG}
+    ports:
+      - "127.0.0.1:18791:8080"
     cap_drop:
       - ALL
     cap_add:

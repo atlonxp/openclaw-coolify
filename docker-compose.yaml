@@ -1,6 +1,6 @@
 include:
-  - services/openclaw/compose.yaml
+  # - services/openclaw/compose.yaml  # Migrated to production: oracle.arokago.com
   - services/docker-proxy/compose.yaml
   - services/searxng/compose.yaml
   - services/registry/compose.yaml
-  - services/mission-control/compose.yaml
+  # - services/mission-control/compose.yaml  # Running from source: pnpm dev
