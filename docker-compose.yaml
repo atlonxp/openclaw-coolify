@@ -3,3 +3,4 @@ include:
   - services/docker-proxy/compose.yaml
   - services/searxng/compose.yaml
   - services/registry/compose.yaml
+  - services/mission-control/compose.yaml
